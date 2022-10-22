@@ -31,49 +31,35 @@ app.get('/api/notes', (req,res) => {
 
 
 // api post
-app.post('api/notes', (req, res) => {
+app.post("/api/notes", (req, res) => {
+  // make let variable for new entries
   console.info(`${req.method} request recieved to add a note`)
-
+  const getNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf-8"))
   const {title, text} = req.body;
-
-  if(title && text) {
-    const newNote = {
-      title,
-      text,
-      note_id: uuid(),
-    };
-
-    fs.readFile(notes, 'utf-8', (err, data) => {
-      if(err) {
-        console.error(err);
-      } else {
-        console.log('connection made')
-        const parsedNotes = JSON.parse(data);
-        parsedNotes.push(newNote);
-
-        fs.writeFile(
-          'notes',
-          JSON.stringify(parsedNotes, null, 3),
-          (err) =>
-            err
-            ? console.error(err)
-            : console.info('Successfully added note.')
-            
-        );
-      } 
-    });
-
-    const response = {
-      status: 'success',
-      body: newNote,    
-    };
-
-    console.log(response);
-    res.status(201).json(response);
+  if ( title && text ) {
+      const newNote = {
+          title,
+          text,
+          id: uuid (),
+      }
+      getNotes.push(newNote);
+      let newData = JSON.stringify(getNotes)
+      fs.writeFile("./db/db.json", newData, (err) => {
+          if (err) {
+              console.log(err);
+              return res.json("Error");
+          }
+          const response = {
+              status: "Success",
+              body: newNote,
+          };
+          return res.json(response);
+      })
   } else {
-    res.status(500).json('status: Error in post');
+      return res.json("Please complete both note title and text field.");
   }
-})
+
+  });
 
 
 app.listen(PORT, () =>
