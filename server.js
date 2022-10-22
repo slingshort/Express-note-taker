@@ -24,15 +24,17 @@ app.get('/notes', (req, res) =>
 
 // api get
 app.get('/api/notes', (req,res) => {
-  console.info(`${req.method} request recieved to add a note`)
+  console.info(`${req.method} request recieved to retrieve notes`)
 
   fs.readFile(notes, 'utf-8', (err,data) => {
     if (err) {
       console.error(err)
+      res.status(404).json('status:"get req fail"')
      } else {
       console.log('connection made')
       const parsedNotes = JSON.parse(data);
       parsedNotes.push(newNote);
+      res.status(200).json('status:"get req success"')
     }
 
   });
@@ -81,7 +83,7 @@ app.post('api/notes', (req, res) => {
     console.log(response);
     res.status(201).json(response);
   } else {
-    res.status(500).json('Error in post');
+    res.status(500).json('status: Error in post');
   }
 })
 
