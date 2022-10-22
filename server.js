@@ -24,25 +24,21 @@ app.get('/notes', (req, res) =>
 
 // api get
 app.get('/api/notes', (req,res) => {
-  res.status(200).json(notes);
- 
-  if (err) {
-    console.error(err);
-  } else {
-    console.info(`${req.method} request recieved to get notes`);
-    fs.readFile(notes, 'utf-8', (err,data) => {
-      if (err) {
-        console.error(err)
-      } else {
-        console.log('connection made')
-        const parsedNotes = JSON.parse(data);
-        parsedaNotes.push(newNote);
-      }
+  console.info(`${req.method} request recieved to add a note`)
 
-    });
-  }
-  
+  fs.readFile(notes, 'utf-8', (err,data) => {
+    if (err) {
+      console.error(err)
+     } else {
+      console.log('connection made')
+      const parsedNotes = JSON.parse(data);
+      parsedNotes.push(newNote);
+    }
+
+  });
 })
+  
+
 
 // api post
 app.post('api/notes', (req, res) => {
@@ -57,7 +53,6 @@ app.post('api/notes', (req, res) => {
       note_id: uuid(),
     };
 
-    saveNote()
     fs.readFile(notes, 'utf-8', (err, data) => {
       if(err) {
         console.error(err);
