@@ -11,7 +11,7 @@ const PORT = process.env.port || 3001;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
-
+ 
 // home page
 app.get('/', (req, res) => 
   res.send(path.join(__dirname,'/public/index.html'))
@@ -27,7 +27,6 @@ app.get('/api/notes', (req,res) => {
   console.info(`${req.method} request recieved to retrieve notes`)
   return res.json(notes);
 })
-  
 
 
 // api post
@@ -59,7 +58,14 @@ app.post("/api/notes", (req, res) => {
       return res.json("Please complete both note title and text field.");
   }
 
-  });
+});
+
+
+// app.delete("/delete/:id", (req,res) => {
+//   console.info(`${req.method} request recieved to delete note`)
+  
+// }),
+
 
 
 app.listen(PORT, () =>
